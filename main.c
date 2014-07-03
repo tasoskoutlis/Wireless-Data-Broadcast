@@ -17,7 +17,7 @@ int main( int argc, char *argv[] ){
 	char **name;
 	int countNodes = 0, countMergedNodes = 0;
 	
-	treeNode *head, *node;
+	treeNode *head;
 	
 	if ( argc != 2 ){
 		printf("No input file \n");   
@@ -55,7 +55,8 @@ int main( int argc, char *argv[] ){
 	
 	firstStageAlgo( head, name, countNodes);
 	
-#if 0	
+#if 0
+	treeNode *node;
 	for(node = head->treeNxt; node != NULL ; node = node->treeNxt){
 		printf("EDWWWW	name %s    and freq %lf \n", node->name, node->freq);
 	}
@@ -93,7 +94,7 @@ int main( int argc, char *argv[] ){
 	
 	printf("COUNTMAXNODES gia to MAX einai %d \n", countMergedNodes);
 	
-	createControlTable( head, countNodes, countMergedNodes);
+	createControlTable( head->treeNxt, countNodes, countMergedNodes);
 	
 	/*	ALGORITHM 2  */
 	

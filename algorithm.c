@@ -93,13 +93,14 @@ void firstStageAlgo( treeNode *head, char **name, int countNodes){
 
 void secondStageAlgo( treeNode *head, char **name, int countNodes, int *countMergedNodes ){
 	
-	treeNode *node, *mergedNode, *leftNode, *rightNode;
+	treeNode *mergedNode, *leftNode, *rightNode;
 	char *merged;
 	int i = 1;
 	
 	while ( i < countNodes ){
 	
 #if 0
+	treeNode *node;
 	//print list
 	for(node = head; node != NULL; node = node->treeNxt){
 		printf("name %s and freq %d \n", node->name, node->level);

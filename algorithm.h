@@ -26,7 +26,4 @@ extern void secondStageAlgo( treeNode *head, char **name, int countNodes, int *c
  */
 extern void secondAlgorithm( treeNode *head, int n, int countNodes );
 
-extern void createControlTable( treeNode *head, int countNodes, int countMergedNodes );
-
-
 #endif

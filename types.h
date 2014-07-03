@@ -23,12 +23,12 @@ typedef struct _treeNode
     
 	int level; 		/* node's level */
 		
- 	int flag;		/* check if node processed */
+ 	int flagRoot;		/* check if node processed */
 	
 	int flagMerged;		/* flag that node is merged */
 	
 	int indexNode;		/* jth index node of level i */
-	
+		
 	struct _treeNode *parent;		/* parent */
 	
 	struct _treeNode *childLeft;	/* left children */
@@ -51,15 +51,15 @@ typedef struct _controlTableElemnt
 {	
 	char *keyValue;
 	
-	struct controlTable *controlIndex; 
+	struct _controlTable *controlIndex; 
 }
 controlTableElemnt;
 
 typedef struct _controlTable
 {	
-	struct treeNode *node;
+	struct _treeNode *node;
 	
-	struct controlTableElemnt *element;
+	struct _controlTableElemnt *element;
 	
 	int appear;
 	

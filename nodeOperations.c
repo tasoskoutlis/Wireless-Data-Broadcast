@@ -6,31 +6,6 @@
 unsigned int level = 0;
 int step = 0;
 
-/*void addLevel( treeNode *head, int maxLevel, int *array );
-
-void countIndexNode( treeNode *head, int countNodes ){
-	
-	treeNode *curr = head;
-	int maxLevel, *array;
-		
-	maxLevel = curr->level;
-	for( curr = curr->nxt; curr != NULL; curr = curr->nxt ){
-		if( curr->level > maxLevel ){
-			maxLevel = curr->level;
-		}
-	}
-	
-	array = ( int* )calloc( maxLevel, sizeof( int ));
-	if( array == NULL ){
-		printf("Couldn't allocate memory \n");
-		exit( EXIT_FAILURE );
-	}
-
-	addLevel( head, maxLevel, array);
-		
-	free(array);
-}*/
-
 void findMinFreqs( treeNode *head, char **name ){
 	
 	treeNode *curr1 = head, *curr2 = head->treeNxt, *temp = curr2;
@@ -130,7 +105,7 @@ void initializeNode( treeNode *head ){
 	head->name = NULL;
 	head->freq = 0.0;
 	head->level = 0;
-	head->flag = 0;
+	head->flagRoot = 0;
 	head->flagMerged = 0;
 	head->parent = NULL;
 	head->childLeft = NULL;

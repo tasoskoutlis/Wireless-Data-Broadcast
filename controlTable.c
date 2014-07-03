@@ -5,14 +5,19 @@
 
 #define DEBUG 1
 
-void initializeControlTable( treeNode *curr, controlTable *controlTableHead, controlTable *table );
+int getOnlyOnce = 0;
+controlTable *currTable;
+
+controlTable *initializeControlTable( treeNode *curr, controlTable *table );
+void searchTreeForElements( treeNode *curr, controlTable *controlTableHead );
+char *maxKeyOfSubTree( treeNode *root );
+void searchTree( treeNode *head, controlTable *controlTableHead );
 
 void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
 	
+	head->flagRoot = -1;
 	treeNode *curr = head;
-	char *name;
-	controlTable *controlTableHead;
-	int i = 0;
+	controlTable *controlTableHead, *temp;
 	
 	//Initialize Head of Control Table
 	controlTableHead = ( controlTable* )malloc( sizeof( controlTable ) );
@@ -21,15 +26,14 @@ void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
 	    printf("couldn't allocate memory \n");
 	    exit(EXIT_FAILURE);
 	}
-	
-	controlTableHead->node = head;
+
 	controlTableHead->element = ( controlTableElemnt* )malloc( sizeof( controlTableElemnt ) );
     if( controlTableHead->element == NULL )
 	{
 	    printf("couldn't allocate memory \n");
 	    exit(EXIT_FAILURE);
 	}
-	controlTableHead->element->keyValue = NULL;
+	controlTableHead->element->keyValue = strdup("no");
 	controlTableHead->element->controlIndex = NULL;
 	controlTableHead->appear = 1;
 	controlTableHead->prv = NULL;
@@ -37,64 +41,167 @@ void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
 	
 	//Fill the Control Table by searching the tree
 	searchTree( head, controlTableHead );
-		
-	name = maxKeyOfSubTree( head );
 	
-	printf("NAME gia to curr->name %s \n", name);
-	
-	for(i = 0; i < 30; i++){
-		printf("char name : %s, appear1 = %d \n", table[i].key, table[i].appear);
+	for( temp = controlTableHead; temp != NULL; temp = temp->nxt ){
+		printf("charonoma %s keyValue : %s, appear1 = %d \n", temp->node->name, temp->element[0].keyValue, temp->appear);
 	}
-
-	free(name);
+	
+	searchTreeForElements( curr, controlTableHead );
 }
 
 void searchTree( treeNode *head, controlTable *controlTableHead ){
 	
 	treeNode *curr;
-	controlTable *currTable;
+	currTable = controlTableHead;
 	
 	curr = head;
 	
-	if( curr != NULL ){		
-		
-		currTable = ( controlTable* )malloc( sizeof( controlTable ) );
-	    if( currTable == NULL )
-		{
-		    printf("couldn't allocate memory \n");
-		    exit(EXIT_FAILURE);
+	if( curr != NULL ){
+		if( curr->flagMerged ){	
+			currTable = initializeControlTable( curr, currTable );			
+			searchTree( curr->childLeft, currTable );
+			currTable = initializeControlTable( curr, currTable );
+			searchTree( curr->childRight, currTable );
 		}
-		
-		initializeControlTable( curr, controlTableHead, currTable );
-			
-		searchTree( curr->childLeft );
-		searchTree( curr->childRight );
 	}
 }
 
-void initializeControlTable( treeNode *curr, controlTable *controlTableHead, controlTable *table ){
+controlTable *initializeControlTable( treeNode *curr, controlTable *table ){
 
-	controlTable *currTable = table;
-
-	currTable->element = ( controlTableElemnt* )malloc( sizeof( controlTableElemnt ) );
-    if( currTable->element == NULL )
-	{
-	    printf("couldn't allocate memory \n");
-	    exit(EXIT_FAILURE);
-	}
+	controlTable *currTable, *temp;
+	int i = 0;
 	
-	currTable->node = curr;
-	currTable->element->keyValue = strdup(curr->name);
-	currTable->element->controlIndex =// kati me to currTable; //pou tha deiksei
-	currTable->appear = 1; //edw me to appear
-	currTable->nxt = NULL;	
-	currTable->prv = controlTableHead;
+	if( !getOnlyOnce ){
+		table->node = curr;
+		getOnlyOnce = 1;
+		
+		return table;
+	}
+	else{
+		
+		currTable = ( controlTable* )malloc( sizeof( controlTable ) );
+		if( currTable == NULL )
+		{
+			printf("couldn't allocate memory \n");
+			exit(EXIT_FAILURE);
+		}
+		
+		currTable->node = curr;
+		currTable->element = ( controlTableElemnt* )malloc( currTable->node->level *sizeof( controlTableElemnt ) );
+    	if( currTable->element == NULL )
+		{
+			printf("couldn't allocate memory \n");
+	    	exit(EXIT_FAILURE);
+		}
+		for(i = 0; i < currTable->node->level; i++){
+			currTable->element[i].keyValue = strdup("no");
+			currTable->element[i].controlIndex = NULL;
+		}	
+		currTable->appear = 1;
+		
+		for( temp = table; temp != NULL; temp = temp->prv ){
+			if( !strcmp(currTable->node->name, temp->node->name) ){
+				currTable->appear++;
+				break;
+			}
+		}
+		currTable->prv = table;
+		currTable->nxt = NULL;
+		table->nxt = currTable;
+		
+		return currTable;
+	}
+}
+
+void searchTreeForElements( treeNode *curr, controlTable *controlTableHead ){
+	
+	controlTable *currTable, *searchTable, *temp;
+	int j = 0;
+	char *name;
+	
+	for( currTable = controlTableHead; currTable != NULL; currTable = currTable->nxt ){
+		temp = currTable->prv;
+											
+		if( !currTable->node->flagRoot ){
+				
+				if( currTable->appear == 1 ){					
+					for( j = 0; j < currTable->node->level-1; j++){
+						currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
+						currTable->element[j].controlIndex = temp->element[j].controlIndex;
+					}
+					if( temp->appear == 1){						
+						for( searchTable = currTable; searchTable != NULL; searchTable = searchTable->nxt ){
+							if( !strcmp(searchTable->node->name, temp->node->name) && searchTable->appear == 2 ){
+								break;
+							}
+						}
+						currTable->element[j].controlIndex = searchTable;
+					}
+					else{
+						if( temp->node->flagRoot == -1 && temp->appear == 2){
+							currTable->element[j].controlIndex = NULL;
+						}
+						else{
+							for( searchTable = currTable; searchTable != NULL; searchTable = searchTable->nxt ){
+								if( !strcmp(searchTable->node->name, temp->node->parent->name) && searchTable->appear == 2 ){
+									break;
+								}
+							}
+							currTable->element[j].controlIndex = searchTable;
+						}
+					}
+					name = maxKeyOfSubTree( currTable->node );
+					currTable->element[j].keyValue = strdup(name);	
+				}
+				else if( currTable->appear == 2 ){
+					if( !strcmp(currTable->node->name, temp->node->name) ){
+						
+						for( j = currTable->node->level-1; j > 0; j--){
+							currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
+							currTable->element[j].controlIndex = temp->element[j].controlIndex;
+						}
+						name = maxKeyOfSubTree( currTable->node->childLeft );
+						currTable->element[0].keyValue = strdup(name);
+						currTable->element[0].controlIndex = controlTableHead;
+					}
+					else{						
+						name = maxKeyOfSubTree( currTable->node->childLeft );
+						currTable->element[0].keyValue = strdup( name );
+						currTable->element[0].controlIndex = controlTableHead;
+						for( j = 1; j < currTable->node->level; j++){
+							currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
+							currTable->element[j].controlIndex = temp->element[j].controlIndex;
+						}
+					}
+				}
+			}
+			else{
+				if( currTable->appear == 2 ){
+					name = maxKeyOfSubTree( currTable->node->childLeft );
+					currTable->element[0].keyValue = strdup(name);
+					currTable->element[0].controlIndex = controlTableHead;
+				}
+				else{			
+					currTable->element[0].keyValue = strdup("no");
+				}
+				
+			}
+	}
 }
 
 char *maxKeyOfSubTree( treeNode *root ){
 	
 	treeNode *curr;
 	char *name;
+	
+	if( root->flagRoot == -1 ){
+		name = strdup( "no" );
+		return name;
+	}
+	else if( root->childLeft == NULL ){
+		name = strdup( root->name );
+		return name;
+	}
 
 	for( curr = root->childRight; curr != NULL; curr = curr->childRight ){
 		name = strdup(curr->name);
