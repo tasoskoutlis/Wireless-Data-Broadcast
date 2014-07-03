@@ -8,8 +8,6 @@ extern unsigned int level; //global counter holds level of each node
 extern int step;
 
 //extern void countIndexNode( treeNode *head, int countNodes );
-extern char *maxKeyOfSubTree( treeNode *root );
-extern void searchTree( treeNode *head, controlTable *tableHead );
 
 /*
  *  Find Minimum Frequences

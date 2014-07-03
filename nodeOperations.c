@@ -31,53 +31,6 @@ void countIndexNode( treeNode *head, int countNodes ){
 	free(array);
 }*/
 
-void searchTree( treeNode *head, controlTable *tableHead ){
-	
-	treeNode *curr;
-	controlTable *currTable;
-	controlTableElemnt *element;
-	
-	curr = head;
-	
-	if( curr != NULL ){		
-		
-		currTable = ( controlTable* )malloc( sizeof( controlTable ) );
-	    if( currTable == NULL )
-		{
-		    printf("couldn't allocate memory \n");
-		    exit(EXIT_FAILURE);
-		}
-	
-		currTable->element = ( controlTableElemnt* )malloc( sizeof( controlTableElemnt ) );
-	    if( currTable->element == NULL )
-		{
-		    printf("couldn't allocate memory \n");
-		    exit(EXIT_FAILURE);
-		}
-		
-		currTable->node = curr;
-		currTable->element->keyValue = strdup(curr->name);
-		currTable->element->controlIndex =// kati me to currTable; //pou tha deiksei
-		currTable->appear = 1;	
-		currTable->nxt = NULL;	
-		currTable->prv = tableHead;
-			
-		searchTree( curr->childLeft );
-		searchTree( curr->childRight );
-	}
-}
-
-char *maxKeyOfSubTree( treeNode *root ){
-	
-	treeNode *curr;
-	char *name;
-
-	for( curr = root->childRight; curr != NULL; curr = curr->childRight ){
-		name = strdup(curr->name);
-	}
-	return name;
-}
-
 void findMinFreqs( treeNode *head, char **name ){
 	
 	treeNode *curr1 = head, *curr2 = head->treeNxt, *temp = curr2;
@@ -147,21 +100,6 @@ void initTreeNxt( treeNode *head ){
 	curr1->treeNxt = curr1->nxt;
 }
 
-void initializeNode( treeNode *head ){
-	
-	head->name = NULL;
-	head->freq = 0.0;
-	head->level = 0;
-	head->flag = 0;
-	head->flagMerged = 0;
-	head->parent = NULL;
-	head->childLeft = NULL;
-	head->childRight = NULL;
-	head->treeNxt = NULL;
-	head->prv = NULL;
-	head->nxt = NULL;
-}
-
 treeNode *searchNodes( treeNode *head, char *name ){
 	
 	treeNode *curr;
@@ -185,6 +123,21 @@ void findLevel( treeNode *head ){
 		findLevel( curr->childRight );
 		level--;
 	}
+}
+
+void initializeNode( treeNode *head ){
+	
+	head->name = NULL;
+	head->freq = 0.0;
+	head->level = 0;
+	head->flag = 0;
+	head->flagMerged = 0;
+	head->parent = NULL;
+	head->childLeft = NULL;
+	head->childRight = NULL;
+	head->treeNxt = NULL;
+	head->prv = NULL;
+	head->nxt = NULL;
 }
 
 void printTree( treeNode *head ){

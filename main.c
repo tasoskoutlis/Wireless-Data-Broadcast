@@ -6,6 +6,7 @@
 #include "dataParse.h"
 #include "nodeOperations.h"
 #include "algorithm.h"
+#include "controlTable.h"
 
 #define DEBUG 1
 #define CHANNELS 4
@@ -50,6 +51,8 @@ int main( int argc, char *argv[] ){
 		exit( EXIT_FAILURE );
 	}
 	
+	/*	FIRST 10 STEPS OF ALGORITHM 1  */
+	
 	firstStageAlgo( head, name, countNodes);
 	
 #if 0	
@@ -78,15 +81,21 @@ int main( int argc, char *argv[] ){
 	printf("\n");
 #endif	
 	
+	/*	REST OF THE STEPS OF ALGORITHM 1  */
+	
 	secondStageAlgo( head, name, countNodes, &countMergedNodes);
 	
 	printTree( head->treeNxt );
 	
-	countIndexNode( head->treeNxt, countNodes );
+	/*  CONTROL TABLE  */
+	
+	//countIndexNode( head->treeNxt, countNodes );
 	
 	printf("COUNTMAXNODES gia to MAX einai %d \n", countMergedNodes);
 	
 	createControlTable( head, countNodes, countMergedNodes);
+	
+	/*	ALGORITHM 2  */
 	
 	//secondAlgorithm( head, CHANNELS, countNodes );
 	

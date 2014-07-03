@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -148,45 +147,6 @@ void secondStageAlgo( treeNode *head, char **name, int countNodes, int *countMer
 		i++;
 	}
 	printf("\n");
-}
-
-void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
-	
-	treeNode *curr = head;
-	char *name;
-	controlTable *table;
-	int i = 0;
-	
-	tableHead = ( controlTable* )malloc( sizeof( controlTable ) );
-    if( tableHead == NULL )
-	{
-	    printf("couldn't allocate memory \n");
-	    exit(EXIT_FAILURE);
-	}
-	
-	tableHead->node = head;
-	tableHead->element = ( controlTableElemnt* )malloc( sizeof( controlTableElemnt ) );
-	
-	tableHead->element->keyValue = NULL;
-	tableHead->element->controlIndex = NULL;
-	tableHead->appear = 1;
-	tableHead->prv = NULL;
-	tableHead->nxt = NULL;
-	
-	searchTree( head, tableHead );
-		
-	name = maxKeyOfSubTree( head );
-	
-	printf("NAME gia to curr->name %s \n", name);
-	
-
-	for(i = 0; i < 30; i++){
-		printf("char name : %s, appear1 = %d \n", table[i].key, table[i].appear);
-		
-	}
-
-
-	free(name);
 }
 
 void secondAlgorithm( treeNode *head, int n, int countNodes ){
