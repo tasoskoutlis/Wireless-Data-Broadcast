@@ -58,7 +58,7 @@ int main( int argc, char *argv[] ){
 #if 0
 	treeNode *node;
 	for(node = head->treeNxt; node != NULL ; node = node->treeNxt){
-		printf("EDWWWW	name %s    and freq %lf \n", node->name, node->freq);
+		printf("	name %s    and freq %lf \n", node->name, node->freq);
 	}
 	printf("\n");
 #endif
@@ -89,11 +89,7 @@ int main( int argc, char *argv[] ){
 	printTree( head->treeNxt );
 	
 	/*  CONTROL TABLE  */
-	
-	//countIndexNode( head->treeNxt, countNodes );
-	
-	printf("COUNTMAXNODES gia to MAX einai %d \n", countMergedNodes);
-	
+		
 	createControlTable( head->treeNxt, countNodes, countMergedNodes);
 	
 	/*	ALGORITHM 2  */

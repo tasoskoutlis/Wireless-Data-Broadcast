@@ -237,5 +237,4 @@ void freeControlTable( controlTable *controlTableHead ){
 		free( controlTableHead );
 		controlTableHead = curr;
 	}
-	
 }

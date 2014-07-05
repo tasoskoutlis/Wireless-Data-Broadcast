@@ -135,6 +135,7 @@ void freeNodes( treeNode *head ){
 		head = curr;
 	}
 }
+
 void freeTree( treeNode *head ){
 	
 	treeNode *curr;
