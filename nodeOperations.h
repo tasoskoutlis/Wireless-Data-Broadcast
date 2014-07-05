@@ -5,9 +5,6 @@
 #include "dataParse.h"
 
 extern unsigned int level; //global counter holds level of each node
-extern int step;
-
-//extern void countIndexNode( treeNode *head, int countNodes );
 
 /*
  *  Find Minimum Frequences

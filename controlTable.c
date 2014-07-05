@@ -12,12 +12,17 @@ controlTable *initializeControlTable( treeNode *curr, controlTable *table );
 void searchTreeForElements( treeNode *curr, controlTable *controlTableHead );
 char *maxKeyOfSubTree( treeNode *root );
 void searchTree( treeNode *head, controlTable *controlTableHead );
+void freeControlTable( controlTable *controlTableHead );
 
 void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
 	
 	head->flagRoot = -1;
+	
 	treeNode *curr = head;
 	controlTable *controlTableHead, *temp;
+	int i = 0;
+	
+	printf("Start Creating Control Table\n");
 	
 	//Initialize Head of Control Table
 	controlTableHead = ( controlTable* )malloc( sizeof( controlTable ) );
@@ -42,11 +47,20 @@ void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
 	//Fill the Control Table by searching the tree
 	searchTree( head, controlTableHead );
 	
+#if DEBUG
 	for( temp = controlTableHead; temp != NULL; temp = temp->nxt ){
-		printf("charonoma %s keyValue : %s, appear1 = %d \n", temp->node->name, temp->element[0].keyValue, temp->appear);
+		for( i = 0; i < temp->node->level; i++){
+			printf("gia komvo %s me appearance %d , me thesi %d kai key %s \n", temp->node->name, temp->appear, i, temp->element[i].keyValue);
+		}
+		printf("\n");
 	}
+#endif
 	
 	searchTreeForElements( curr, controlTableHead );
+	
+	freeControlTable( controlTableHead );
+	
+	printf("Finished Control Table\n");
 }
 
 void searchTree( treeNode *head, controlTable *controlTableHead ){
@@ -78,7 +92,6 @@ controlTable *initializeControlTable( treeNode *curr, controlTable *table ){
 		return table;
 	}
 	else{
-		
 		currTable = ( controlTable* )malloc( sizeof( controlTable ) );
 		if( currTable == NULL )
 		{
@@ -122,70 +135,69 @@ void searchTreeForElements( treeNode *curr, controlTable *controlTableHead ){
 	for( currTable = controlTableHead; currTable != NULL; currTable = currTable->nxt ){
 		temp = currTable->prv;
 											
-		if( !currTable->node->flagRoot ){
+		if( !currTable->node->flagRoot ){  //if not head
 				
-				if( currTable->appear == 1 ){					
-					for( j = 0; j < currTable->node->level-1; j++){
-						currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
-						currTable->element[j].controlIndex = temp->element[j].controlIndex;
+			if( currTable->appear == 1 ){					
+				for( j = 0; j < currTable->node->level-1; j++){
+					currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
+					currTable->element[j].controlIndex = temp->element[j].controlIndex;
+				}
+				if( temp->appear == 1){						
+					for( searchTable = currTable; searchTable != NULL; searchTable = searchTable->nxt ){
+						if( !strcmp(searchTable->node->name, temp->node->name) && searchTable->appear == 2 ){
+							break;
+						}
 					}
-					if( temp->appear == 1){						
+					currTable->element[j].controlIndex = searchTable;
+				}
+				else{
+					if( temp->node->flagRoot == -1 && temp->appear == 2){
+						currTable->element[j].controlIndex = NULL;
+					}
+					else{
 						for( searchTable = currTable; searchTable != NULL; searchTable = searchTable->nxt ){
-							if( !strcmp(searchTable->node->name, temp->node->name) && searchTable->appear == 2 ){
+							if( !strcmp(searchTable->node->name, temp->node->parent->name) && searchTable->appear == 2 ){
 								break;
 							}
 						}
 						currTable->element[j].controlIndex = searchTable;
 					}
-					else{
-						if( temp->node->flagRoot == -1 && temp->appear == 2){
-							currTable->element[j].controlIndex = NULL;
-						}
-						else{
-							for( searchTable = currTable; searchTable != NULL; searchTable = searchTable->nxt ){
-								if( !strcmp(searchTable->node->name, temp->node->parent->name) && searchTable->appear == 2 ){
-									break;
-								}
-							}
-							currTable->element[j].controlIndex = searchTable;
-						}
-					}
-					name = maxKeyOfSubTree( currTable->node );
-					currTable->element[j].keyValue = strdup(name);	
 				}
-				else if( currTable->appear == 2 ){
-					if( !strcmp(currTable->node->name, temp->node->name) ){
-						
-						for( j = currTable->node->level-1; j > 0; j--){
-							currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
-							currTable->element[j].controlIndex = temp->element[j].controlIndex;
-						}
-						name = maxKeyOfSubTree( currTable->node->childLeft );
-						currTable->element[0].keyValue = strdup(name);
-						currTable->element[0].controlIndex = controlTableHead;
-					}
-					else{						
-						name = maxKeyOfSubTree( currTable->node->childLeft );
-						currTable->element[0].keyValue = strdup( name );
-						currTable->element[0].controlIndex = controlTableHead;
-						for( j = 1; j < currTable->node->level; j++){
-							currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
-							currTable->element[j].controlIndex = temp->element[j].controlIndex;
-						}
-					}
-				}
+				name = maxKeyOfSubTree( currTable->node );
+				currTable->element[j].keyValue = strdup(name);	
 			}
-			else{
-				if( currTable->appear == 2 ){
+			else if( currTable->appear == 2 ){
+				if( !strcmp(currTable->node->name, temp->node->name) ){
+					
+					for( j = currTable->node->level-1; j > 0; j--){
+						currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
+						currTable->element[j].controlIndex = temp->element[j].controlIndex;
+					}
 					name = maxKeyOfSubTree( currTable->node->childLeft );
 					currTable->element[0].keyValue = strdup(name);
 					currTable->element[0].controlIndex = controlTableHead;
 				}
-				else{			
-					currTable->element[0].keyValue = strdup("no");
+				else{						
+					name = maxKeyOfSubTree( currTable->node->childLeft );
+					currTable->element[0].keyValue = strdup( name );
+					currTable->element[0].controlIndex = controlTableHead;
+					for( j = 1; j < currTable->node->level; j++){
+						currTable->element[j].keyValue = strdup(temp->element[j].keyValue);
+						currTable->element[j].controlIndex = temp->element[j].controlIndex;
+					}
 				}
-				
 			}
+		}
+		else{
+			if( currTable->appear == 2 ){
+				name = maxKeyOfSubTree( currTable->node->childLeft );
+				currTable->element[0].keyValue = strdup(name);
+				currTable->element[0].controlIndex = controlTableHead;
+			}
+			else{			
+				currTable->element[0].keyValue = strdup("no");
+			}		
+		}
 	}
 }
 
@@ -194,11 +206,11 @@ char *maxKeyOfSubTree( treeNode *root ){
 	treeNode *curr;
 	char *name;
 	
-	if( root->flagRoot == -1 ){
+	if( root->flagRoot == -1 ){		//case of head of control table
 		name = strdup( "no" );
 		return name;
 	}
-	else if( root->childLeft == NULL ){
+	else if( root->childLeft == NULL ){		//case of leaf
 		name = strdup( root->name );
 		return name;
 	}
@@ -207,4 +219,23 @@ char *maxKeyOfSubTree( treeNode *root ){
 		name = strdup(curr->name);
 	}
 	return name;
+}
+
+void freeControlTable( controlTable *controlTableHead ){
+	
+	controlTable *curr;
+	int i = 0;
+	curr = controlTableHead;
+  
+	while( curr != NULL )
+    {
+    	curr = controlTableHead->nxt;
+		for( i = 0; i < controlTableHead->node->level; i++){
+			free( controlTableHead->element[i].keyValue );
+		}
+		free( controlTableHead->element );
+		free( controlTableHead );
+		controlTableHead = curr;
+	}
+	
 }

@@ -4,7 +4,6 @@
 #include "nodeOperations.h"
 
 unsigned int level = 0;
-int step = 0;
 
 void findMinFreqs( treeNode *head, char **name ){
 	
@@ -34,12 +33,6 @@ void findMinFreqs( treeNode *head, char **name ){
 				}
 				temp = temp->treeNxt;
 			}
-			/*tempFreq = curr1->freq + temp->freq;
-			if( tempFreq < minFreq ){
-				minFreq = tempFreq;
-				name[0] = curr1->name;
-				name[1] = temp->name;
-			}*/
 		}
 	}
 }
@@ -136,7 +129,6 @@ void freeNodes( treeNode *head ){
     {
     	curr = head->nxt;
 		free( head->name );
-		//free( head->parent );
 		free( head->childLeft );
 		free( head->childRight );
 		free( head );
@@ -152,7 +144,6 @@ void freeTree( treeNode *head ){
     {
     	curr = head->treeNxt;
 		free( head->name );
-		//free( head->parent );
 		free( head->childLeft );
 		free( head->childRight );
 		free( head );
