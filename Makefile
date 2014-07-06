@@ -12,4 +12,4 @@ exec: $(OBJ)
 .PHONY: clean
 
 clean:
-	rm -f *.o *~ core exec
+	rm -f $(OBJ) *~ core exec
