@@ -153,40 +153,40 @@ void secondStageAlgo( treeNode *head, char **name, int countNodes, int *countMer
 void secondAlgorithm( treeNode *head, int n, int countNodes ){
 	
 	treeNode *curr;
-	int i = 0, j = 1, k = 0;
+	int i = 0, j = 1, k = 0, l = 0, t = 0;
 	double data[countNodes], sum = 0.0, temp = 0.0, ave = 0.0, p = 0.0, thre = 0.0;
 	double **C;
 	
 	C = (double **)calloc( n, sizeof(double *) );    
-	    if( C == NULL )
-		{
-		    printf("couldn't allocate memory \n");
-		    exit(EXIT_FAILURE);
-		}
+	if( C == NULL )
+	{
+	    printf("couldn't allocate memory \n");
+	    exit(EXIT_FAILURE);
+	}
     
-	    for (i = 0; i < n; i++) {
-	        C[i] = (double *)calloc( n, sizeof(double) );
-	        if( C[i] == NULL )
-	        {
-	            printf("couldn't allocate memory \n");
-	            exit(EXIT_FAILURE);
-	        }
-	    }
+    for (i = 0; i < countNodes; i++) {
+        C[i] = (double *)calloc( n, sizeof(double) );
+        if( C[i] == NULL )
+        {
+            printf("couldn't allocate memory \n");
+            exit(EXIT_FAILURE);
+        }	
+    }
 	
-	for( curr = head, i = 0 ; curr->nxt != NULL; curr = curr->nxt, i++ ){
+	for( curr = head->nxt, i = 0; curr != NULL; curr = curr->nxt, i++ ){
 		data[i] = curr->freq;
 	}
-	
+			
 	for(i = 0; i < countNodes; i++){
 		for(k = 1; k < countNodes; k++){
-			if( data[k] < data[i] ){
+			if( data[k] <= data[i] ){
 				temp = data[k];
 				data[k] = data[i];
 				data[i] = temp;
 			}
 		}
 	}
-	
+		
 	for(i = 0; i < countNodes; i++){
 		sum += data[i];
 	}
@@ -194,10 +194,13 @@ void secondAlgorithm( treeNode *head, int n, int countNodes ){
 	p = sum;
 	thre = sum/n;
 	
+	k = 0;
 	for(i = 0; i < countNodes; i++){
 		if (ave <= thre ){
 			ave += data[i];
-			
+			printf("k %d kai l %d kai tha bei to %lf \n", k, l, data[i] );
+			C[k][l] = data[i];
+			l++;
 		}
 		else{
 			p -= ave;
@@ -205,6 +208,12 @@ void secondAlgorithm( treeNode *head, int n, int countNodes ){
 			thre = p/(n - j);
 			j++;
 			i--;
+			k++;
+			l = 0;
 		}
+		/*for(t = 0; t < i; t++) {
+			printf("WWWWWWWWWWWW j[%d] t[%d] %lf \n", j-1, t, C[j-1][t]);
+		}*/
 	}
+	//return C;
 }

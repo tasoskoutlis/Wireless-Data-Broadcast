@@ -16,6 +16,7 @@ int main( int argc, char *argv[] ){
 	FILE *f;
 	char **name;
 	int countNodes = 0, countMergedNodes = 0;
+	//double *C;
 	
 	treeNode *head;
 	
@@ -94,13 +95,16 @@ int main( int argc, char *argv[] ){
 	
 	/*	ALGORITHM 2  */
 	
-	//secondAlgorithm( head, CHANNELS, countNodes );
+	printf("Starting Second Algorithm \n");
+	
+	secondAlgorithm( head, CHANNELS, countNodes );
 	
 	printf("freeing memory allocation \n");
 	
 	freeTree( head );
 	freeNodes( head );
 	free( name );
+	//free( C );
 	
 	printf("finished\n");
 	
