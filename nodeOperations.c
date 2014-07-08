@@ -14,27 +14,35 @@ void findMinFreqs( treeNode *head, char **name ){
 	name[1] = curr2->name;
 	
 	for(curr1 = head, curr2 = head->treeNxt; curr2 != NULL; curr1 = curr1->treeNxt, curr2 = curr2->treeNxt){
-		if( !curr2->flagMerged ){
+		if( !curr2->flagMerged ){			
 			tempFreq = curr1->freq + curr2->freq;
 			if( tempFreq < minFreq ){
 				minFreq = tempFreq;
 				name[0] = curr1->name;
-				name[1] = curr2->name;
+				name[1] = curr2->name;				
 			}
 		}
 		else{  //if second node isn't leaf 
 			temp = curr2;
-			while( temp != NULL ){	
+			while( temp->flagMerged == 1 && temp->treeNxt != NULL ){				
+				tempFreq = curr1->freq + temp->freq;
+				if( tempFreq < minFreq ){					
+					minFreq = tempFreq;
+					name[0] = curr1->name;
+					name[1] = temp->name;
+				}
+				temp = temp->treeNxt;				
+			}			
+			if( temp != NULL ){								
 				tempFreq = curr1->freq + temp->freq;
 				if( tempFreq < minFreq ){
 					minFreq = tempFreq;
 					name[0] = curr1->name;
 					name[1] = temp->name;
-				}
-				temp = temp->treeNxt;
+				}				
 			}
 		}
-	}
+	}	
 }
 
 void findMaxLevels( treeNode *head, char **name ){

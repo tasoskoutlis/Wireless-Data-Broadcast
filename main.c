@@ -57,8 +57,8 @@ int main( int argc, char *argv[] ){
 	
 #if 0
 	treeNode *node;
-	for(node = head->treeNxt; node != NULL ; node = node->treeNxt){
-		printf("name %s    and freq %lf \n", node->name, node->freq);
+	for(node = head->nxt; node != NULL ; node = node->nxt){
+		printf("TRELLAAALA name %s    and freq %lf \n", node->name, node->freq);
 	}
 	printf("\n");
 #endif
@@ -75,7 +75,8 @@ int main( int argc, char *argv[] ){
 	
 	initTreeNxt( head );
 	
-#if 0	
+#if 0
+	treeNode *node;	
 	for(node = head->treeNxt; node != NULL ; node = node->treeNxt){
 		printf("name %s and freq %lf and level %d \n", node->name, node->freq, node->level);
 	}

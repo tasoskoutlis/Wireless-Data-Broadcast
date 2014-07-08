@@ -60,27 +60,30 @@ void firstStageAlgo( treeNode *head, char **name, int countNodes){
 		}
 		else{
 			if( rightNode->treeNxt == NULL ){
-				if( !strcmp(leftNode->treeNxt->name,rightNode->name) ){
+				if( !strcmp(leftNode->treeNxt->name, rightNode->name) ){
 					mergedNode->nxt = NULL;
 					mergedNode->treeNxt = NULL;
-					rightNode->prv->nxt = rightNode->nxt;
-					rightNode->prv->treeNxt = rightNode->treeNxt;
 				}
 				else{					
 					mergedNode->nxt = leftNode->treeNxt;
 					mergedNode->treeNxt = leftNode->treeNxt;
-					rightNode->prv->nxt = rightNode->nxt;
 					rightNode->prv->treeNxt = rightNode->treeNxt;
-					rightNode->prv->prv = mergedNode; 
 					leftNode->treeNxt->prv = mergedNode;
-					leftNode->nxt->prv = mergedNode;
 				}	
 			}
 			else{
-				mergedNode->nxt = leftNode->treeNxt;
-				mergedNode->treeNxt = leftNode->treeNxt;
-				rightNode->prv->nxt = rightNode->nxt;
-				rightNode->prv->treeNxt = rightNode->treeNxt;
+				if( !strcmp(leftNode->treeNxt->name, rightNode->name) ){
+					mergedNode->nxt = rightNode->treeNxt;
+					mergedNode->treeNxt = rightNode->treeNxt;
+					rightNode->treeNxt->prv = mergedNode;
+				}
+				else{
+					mergedNode->nxt = leftNode->treeNxt;
+					mergedNode->treeNxt = leftNode->treeNxt;
+					rightNode->prv->treeNxt = rightNode->treeNxt;
+					rightNode->treeNxt->prv = rightNode->prv; 
+					leftNode->treeNxt->prv = mergedNode;
+				}
 			}
 			mergedNode->prv = leftNode->prv;
 			leftNode->prv->treeNxt = mergedNode;
@@ -116,7 +119,7 @@ void secondStageAlgo( treeNode *head, char **name, int countNodes, int *countMer
 		initializeNode( mergedNode );
 		
 		findMaxLevels( head, name);			//find the 2 maximum level nodes to be merged
-		
+					
 		leftNode = searchNodes( head, name[0]);		//find and return the 2 nodes
 		rightNode = searchNodes( head, name[1]);
 		
