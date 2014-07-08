@@ -16,7 +16,6 @@ int main( int argc, char *argv[] ){
 	FILE *f;
 	char **name;
 	int countNodes = 0, countMergedNodes = 0;
-	//double *C;
 	
 	treeNode *head;
 	
@@ -59,7 +58,7 @@ int main( int argc, char *argv[] ){
 #if 0
 	treeNode *node;
 	for(node = head->treeNxt; node != NULL ; node = node->treeNxt){
-		printf("	name %s    and freq %lf \n", node->name, node->freq);
+		printf("name %s    and freq %lf \n", node->name, node->freq);
 	}
 	printf("\n");
 #endif
@@ -68,7 +67,7 @@ int main( int argc, char *argv[] ){
 	
 	findLevel( head->treeNxt );
 	
-#if DEBUG		
+#if 0		
  	printTree( head->treeNxt );
 #endif
 	
@@ -78,7 +77,7 @@ int main( int argc, char *argv[] ){
 	
 #if 0	
 	for(node = head->treeNxt; node != NULL ; node = node->treeNxt){
-		printf("EDWWWW	name %s and freq %lf and level %d \n", node->name, node->freq, node->level);
+		printf("name %s and freq %lf and level %d \n", node->name, node->freq, node->level);
 	}
 	printf("\n");
 #endif	
@@ -87,8 +86,10 @@ int main( int argc, char *argv[] ){
 	
 	secondStageAlgo( head, name, countNodes, &countMergedNodes);
 	
-	printTree( head->treeNxt );
+	printf("Level of every node \n");
 	
+	printTree( head->treeNxt );
+		
 	/*  CONTROL TABLE  */
 		
 	createControlTable( head->treeNxt, countNodes, countMergedNodes);
@@ -104,7 +105,6 @@ int main( int argc, char *argv[] ){
 	freeTree( head );
 	freeNodes( head );
 	free( name );
-	//free( C );
 	
 	printf("finished\n");
 	

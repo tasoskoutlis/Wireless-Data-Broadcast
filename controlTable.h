@@ -6,7 +6,7 @@
 #include "nodeOperations.h"
 
 extern int getOnlyOnce;
-extern controlTable *currTable;
+extern controlTable *currTable;		//holds node of control table
 
 /*
  *  Performs the second algorithm

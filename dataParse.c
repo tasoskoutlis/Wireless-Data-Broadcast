@@ -17,7 +17,7 @@ int readInputFile( FILE *f, treeNode *head ){
 			continue;
 		}
 		
-		node = ( treeNode* )malloc( sizeof( treeNode ));
+		node = ( treeNode* )malloc( sizeof( treeNode ));		//memory allocation for every node
 		if ( node == NULL ){
 			printf("Couldn't allocate memory \n");
 			exit( EXIT_FAILURE );

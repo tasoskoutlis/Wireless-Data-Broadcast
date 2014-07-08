@@ -8,10 +8,12 @@
 int getOnlyOnce = 0;
 controlTable *currTable;
 
+//return biggest node of sub tree
+char *maxKeyOfSubTree( treeNode *root );
+
+void searchTree( treeNode *head, controlTable *controlTableHead );
 controlTable *initializeControlTable( treeNode *curr, controlTable *table );
 void searchTreeForElements( treeNode *curr, controlTable *controlTableHead );
-char *maxKeyOfSubTree( treeNode *root );
-void searchTree( treeNode *head, controlTable *controlTableHead );
 void freeControlTable( controlTable *controlTableHead );
 
 void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
@@ -22,7 +24,7 @@ void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
 	controlTable *controlTableHead, *temp;
 	int i = 0;
 	
-	printf("Start Creating Control Table\n");
+	printf("Creating Control Table\n");
 	
 	//Initialize Head of Control Table
 	controlTableHead = ( controlTable* )malloc( sizeof( controlTable ) );
@@ -44,20 +46,22 @@ void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
 	controlTableHead->prv = NULL;
 	controlTableHead->nxt = NULL;
 	
-	//Fill the Control Table by searching the tree
+	//Initialize the Control Table by searching the tree
 	searchTree( head, controlTableHead );
+	
+	//Fill the Control Table by searching the tree
+	searchTreeForElements( curr, controlTableHead );
 	
 #if DEBUG
 	for( temp = controlTableHead; temp != NULL; temp = temp->nxt ){
 		for( i = 0; i < temp->node->level; i++){
-			printf("gia komvo %s me appearance %d , me thesi %d kai key %s \n", temp->node->name, temp->appear, i, temp->element[i].keyValue);
+			printf("node %s with appearance %d , position %d and key %s \n", temp->node->name, temp->appear, i, temp->element[i].keyValue);
 		}
 		printf("\n");
 	}
 #endif
 	
-	searchTreeForElements( curr, controlTableHead );
-	
+	//Free Control Table Memory
 	freeControlTable( controlTableHead );
 	
 	printf("Finished Control Table\n");
@@ -82,10 +86,10 @@ void searchTree( treeNode *head, controlTable *controlTableHead ){
 
 controlTable *initializeControlTable( treeNode *curr, controlTable *table ){
 
-	controlTable *currTable, *temp;
+	controlTable *temp;
 	int i = 0;
 	
-	if( !getOnlyOnce ){
+	if( !getOnlyOnce ){		//get in the first time ( head )
 		table->node = curr;
 		getOnlyOnce = 1;
 		
@@ -100,7 +104,7 @@ controlTable *initializeControlTable( treeNode *curr, controlTable *table ){
 		}
 		
 		currTable->node = curr;
-		currTable->element = ( controlTableElemnt* )malloc( currTable->node->level *sizeof( controlTableElemnt ) );
+		currTable->element = ( controlTableElemnt* )malloc( currTable->node->level * sizeof( controlTableElemnt ) );
     	if( currTable->element == NULL )
 		{
 			printf("couldn't allocate memory \n");
@@ -113,7 +117,7 @@ controlTable *initializeControlTable( treeNode *curr, controlTable *table ){
 		currTable->appear = 1;
 		
 		for( temp = table; temp != NULL; temp = temp->prv ){
-			if( !strcmp(currTable->node->name, temp->node->name) ){
+			if( !strcmp(currTable->node->name, temp->node->name) ){ //if node appeared again
 				currTable->appear++;
 				break;
 			}
@@ -128,7 +132,7 @@ controlTable *initializeControlTable( treeNode *curr, controlTable *table ){
 
 void searchTreeForElements( treeNode *curr, controlTable *controlTableHead ){
 	
-	controlTable *currTable, *searchTable, *temp;
+	controlTable *searchTable, *temp;
 	int j = 0;
 	char *name;
 	

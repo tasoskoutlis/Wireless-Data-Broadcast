@@ -30,7 +30,7 @@ void firstStageAlgo( treeNode *head, char **name, int countNodes){
 		
 		findMinFreqs( head->treeNxt, name );	//find the 2 minimum nodes to be merged
 		
-		leftNode = searchNodes( head->treeNxt, name[0]);
+		leftNode = searchNodes( head->treeNxt, name[0]);		//find and return the 2 nodes
 		rightNode = searchNodes( head->treeNxt, name[1]);
 		
 		/*	begin merging	*/
@@ -115,9 +115,9 @@ void secondStageAlgo( treeNode *head, char **name, int countNodes, int *countMer
 		}
 		initializeNode( mergedNode );
 		
-		findMaxLevels( head, name);
+		findMaxLevels( head, name);			//find the 2 maximum level nodes to be merged
 		
-		leftNode = searchNodes( head, name[0]);
+		leftNode = searchNodes( head, name[0]);		//find and return the 2 nodes
 		rightNode = searchNodes( head, name[1]);
 		
 		/*	begin merging	*/
@@ -148,14 +148,13 @@ void secondStageAlgo( treeNode *head, char **name, int countNodes, int *countMer
 		(*countMergedNodes)++;
 		i++;
 	}
-	printf("\n");
 }
 
 void secondAlgorithm( treeNode *head, int n, int countNodes ){
 	
 	treeNode *curr;
-	int i = 0, j = 1, k = 0, l = 0, t = 0;
-	double data[countNodes], sum = 0.0, temp = 0.0, ave = 0.0, p = 0.0, thre = 0.0;
+	int i = 0, j = 1, k = 0, l = 0;
+	double data[countNodes], sum = 0.0, ave = 0.0, p = 0.0, thre = 0.0;
 	double **C;
 	
 	C = (double **)calloc( n, sizeof(double *) );    
@@ -177,7 +176,8 @@ void secondAlgorithm( treeNode *head, int n, int countNodes ){
 		data[i] = curr->freq;
 	}
 	
-#if SORT		
+#if SORT	
+	double temp = 0.0;	
 	for(i = 0; i < countNodes; i++){
 		for(k = 0; k < countNodes; k++){
 			if( data[k] < data[i] ){
@@ -217,6 +217,5 @@ void secondAlgorithm( treeNode *head, int n, int countNodes ){
 			l = 0;
 		}
 	}
-	
 	free( C ); 
 }
