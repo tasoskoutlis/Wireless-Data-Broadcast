@@ -97,7 +97,7 @@ int main( int argc, char *argv[] ){
 	
 	printf("Starting Second Algorithm \n");
 	
-	secondAlgorithm( head, CHANNELS, countNodes );
+	secondAlgorithm( head->nxt, CHANNELS, countNodes );
 	
 	printf("freeing memory allocation \n");
 	

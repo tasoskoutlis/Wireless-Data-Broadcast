@@ -4,6 +4,7 @@
 #include "algorithm.h"
 
 #define DEBUG 1
+#define SORT 0
 
 void firstStageAlgo( treeNode *head, char **name, int countNodes){
 	
@@ -163,7 +164,6 @@ void secondAlgorithm( treeNode *head, int n, int countNodes ){
 	    printf("couldn't allocate memory \n");
 	    exit(EXIT_FAILURE);
 	}
-    
     for (i = 0; i < countNodes; i++) {
         C[i] = (double *)calloc( n, sizeof(double) );
         if( C[i] == NULL )
@@ -173,36 +173,41 @@ void secondAlgorithm( treeNode *head, int n, int countNodes ){
         }	
     }
 	
-	for( curr = head->nxt, i = 0; curr != NULL; curr = curr->nxt, i++ ){
+	for( curr = head, i = 0; curr != NULL; curr = curr->nxt, i++ ){
 		data[i] = curr->freq;
 	}
-			
+	
+#if SORT		
 	for(i = 0; i < countNodes; i++){
-		for(k = 1; k < countNodes; k++){
-			if( data[k] <= data[i] ){
+		for(k = 0; k < countNodes; k++){
+			if( data[k] < data[i] ){
 				temp = data[k];
 				data[k] = data[i];
 				data[i] = temp;
 			}
 		}
 	}
+#endif
 		
-	for(i = 0; i < countNodes; i++){
+	for(i = 0; i < countNodes; i++){		
 		sum += data[i];
 	}
 	
 	p = sum;
 	thre = sum/n;
-	
 	k = 0;
+	
+	printf("Memory allocation\n");
+	
 	for(i = 0; i < countNodes; i++){
 		if (ave <= thre ){
 			ave += data[i];
-			printf("k %d kai l %d kai tha bei to %lf \n", k, l, data[i] );
+			printf("In channel %d memory allocation data  %lf \n", k+1 , data[i] );
 			C[k][l] = data[i];
 			l++;
 		}
 		else{
+			printf("\n");
 			p -= ave;
 			ave = 0;
 			thre = p/(n - j);
@@ -211,9 +216,7 @@ void secondAlgorithm( treeNode *head, int n, int countNodes ){
 			k++;
 			l = 0;
 		}
-		/*for(t = 0; t < i; t++) {
-			printf("WWWWWWWWWWWW j[%d] t[%d] %lf \n", j-1, t, C[j-1][t]);
-		}*/
 	}
-	//return C;
+	
+	free( C ); 
 }
