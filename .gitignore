@@ -14,3 +14,13 @@ controlTable.o
 exec
 
 main.o
+
+*.o
+
+controlTable.o
+
+exec
+
+main.o
+
+algorithm.o
