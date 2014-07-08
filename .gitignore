@@ -6,3 +6,11 @@ exec
 *.o
 
 *.o
+
+algorithm.o
+
+controlTable.o
+
+exec
+
+main.o
