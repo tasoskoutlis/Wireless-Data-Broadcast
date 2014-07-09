@@ -45,50 +45,36 @@ void firstStageAlgo( treeNode *head, char **name, int countNodes){
 		leftNode->parent = mergedNode;
 		rightNode->parent = mergedNode;
 
-		if ( !rightNode->flagMerged ){
-			if( rightNode->treeNxt == NULL ){
+		if( rightNode->treeNxt == NULL ){
+			if( !strcmp(leftNode->treeNxt->name, rightNode->name) ){
 				mergedNode->nxt = NULL;
 				mergedNode->treeNxt = NULL;
 			}
-			else{
+			else{					
+				mergedNode->nxt = leftNode->treeNxt;
+				mergedNode->treeNxt = leftNode->treeNxt;
+				rightNode->prv->treeNxt = rightNode->treeNxt;
+				leftNode->treeNxt->prv = mergedNode;
+			}	
+		}
+		else{
+			if( !strcmp(leftNode->treeNxt->name, rightNode->name) ){
 				mergedNode->nxt = rightNode->treeNxt;
 				mergedNode->treeNxt = rightNode->treeNxt;
 				rightNode->treeNxt->prv = mergedNode;
 			}
-			leftNode->prv->treeNxt = mergedNode;
-			mergedNode->prv = leftNode->prv;
-		}
-		else{
-			if( rightNode->treeNxt == NULL ){
-				if( !strcmp(leftNode->treeNxt->name, rightNode->name) ){
-					mergedNode->nxt = NULL;
-					mergedNode->treeNxt = NULL;
-				}
-				else{					
-					mergedNode->nxt = leftNode->treeNxt;
-					mergedNode->treeNxt = leftNode->treeNxt;
-					rightNode->prv->treeNxt = rightNode->treeNxt;
-					leftNode->treeNxt->prv = mergedNode;
-				}	
-			}
 			else{
-				if( !strcmp(leftNode->treeNxt->name, rightNode->name) ){
-					mergedNode->nxt = rightNode->treeNxt;
-					mergedNode->treeNxt = rightNode->treeNxt;
-					rightNode->treeNxt->prv = mergedNode;
-				}
-				else{
-					mergedNode->nxt = leftNode->treeNxt;
-					mergedNode->treeNxt = leftNode->treeNxt;
-					rightNode->prv->treeNxt = rightNode->treeNxt;
-					rightNode->treeNxt->prv = rightNode->prv; 
-					leftNode->treeNxt->prv = mergedNode;
-				}
+				mergedNode->nxt = leftNode->treeNxt;
+				mergedNode->treeNxt = leftNode->treeNxt;
+				rightNode->prv->treeNxt = rightNode->treeNxt;
+				rightNode->treeNxt->prv = rightNode->prv; 
+				leftNode->treeNxt->prv = mergedNode;
 			}
-			mergedNode->prv = leftNode->prv;
-			leftNode->prv->treeNxt = mergedNode;
 		}
+		mergedNode->prv = leftNode->prv;
+		leftNode->prv->treeNxt = mergedNode;		
 		mergedNode->flagMerged = 1;
+		
 		printf("merged node name %s and freq %lf \n", mergedNode->name, mergedNode->freq);
 		printf("\n");
 		i++;
