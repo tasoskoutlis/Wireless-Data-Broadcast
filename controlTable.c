@@ -8,13 +8,36 @@
 int getOnlyOnce = 0;
 controlTable *currTable;
 
-//return biggest node of sub tree
+/*
+ *  @param treeNode *root
+ *  @return biggest node of sub tree
+ */
 char *maxKeyOfSubTree( treeNode *root );
 
+/*
+ *  searches the tree recursively
+ *  @param treeNode *head , controlTable *controlTableHead
+ */
 void searchTree( treeNode *head, controlTable *controlTableHead );
+
+/*
+ *  initializes every node of Control Table
+ *  @param treeNode *curr , controlTable *controlTableHead
+ */
 controlTable *initializeControlTable( treeNode *curr, controlTable *table );
+
+/*
+ * Fills Control Tables elements
+ *  @param treeNode *head , controlTable *controlTableHead
+ */
 void searchTreeForElements( treeNode *curr, controlTable *controlTableHead );
+
+/*
+ *  Free Control Tables memory 
+ *  @param controlTable *controlTableHead
+ */
 void freeControlTable( controlTable *controlTableHead );
+
 
 void createControlTable( treeNode *head, int countNodes, int countMergedNodes ){
 	

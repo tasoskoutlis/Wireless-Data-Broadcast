@@ -22,7 +22,7 @@ extern void secondStageAlgo( treeNode *head, char **name, int countNodes, int *c
 /*
  *  Performs the second algorithm
  *  @param treeNode *head , n number of data channels and int countNodes
- *  @return C the data channels
+ * Prints array C data on every channel
  */
 extern void secondAlgorithm( treeNode *head, int n, int countNodes );
 
