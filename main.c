@@ -1,3 +1,9 @@
+/************************************
+* Created by
+*
+*	KOYTLIS ANASTASIOS  AEM = 846	ankoutli@inf.uth.gr
+*	MITSIANIS EYAGGELOS AEM = 801	evmitsia@inf.uth.gr
+************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
