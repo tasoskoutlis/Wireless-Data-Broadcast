@@ -1,9 +1,9 @@
-/************************************
+/********************************************************
 * Created by
 *
 *	KOYTLIS ANASTASIOS  AEM = 846	ankoutli@inf.uth.gr
 *	MITSIANIS EYAGGELOS AEM = 801	evmitsia@inf.uth.gr
-************************************/
+*********************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -64,7 +64,7 @@ int main( int argc, char *argv[] ){
 #if 0
 	treeNode *node;
 	for(node = head->nxt; node != NULL ; node = node->nxt){
-		printf("TRELLAAALA name %s    and freq %lf \n", node->name, node->freq);
+		printf("name %s and freq %lf \n", node->name, node->freq);
 	}
 	printf("\n");
 #endif
