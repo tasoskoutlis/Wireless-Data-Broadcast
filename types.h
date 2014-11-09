@@ -1,11 +1,6 @@
 /*
  * types.h
  *
-<<<<<<< HEAD
-=======
- *      Author:
- *
->>>>>>> FETCH_HEAD
  *      Description: Main data type declarations used throughout the code
  */
 
