@@ -1,7 +1,7 @@
 /*
  * types.h
  *
- *      Author: 
+ *      Author:
  *
  *      Description: Main data type declarations used throughout the code
  */
@@ -15,11 +15,11 @@
 
 typedef struct _treeNode
 {
-    char *name;		/* node's name */
+    	char *name;		/* node's name */
 
 	int key;		/* key of every node */
 	
-    double freq;	/* node's frequency */
+    	double freq;	/* node's frequency */
     
 	int level; 		/* node's level */
 		
