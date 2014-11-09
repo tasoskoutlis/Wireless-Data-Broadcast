@@ -1,8 +1,6 @@
 /*
  * types.h
  *
- *      Author: 
- *
  *      Description: Main data type declarations used throughout the code
  */
 
